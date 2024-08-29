@@ -30,85 +30,14 @@
     LogHelper::addMessage('actor_name: ' . IndexHelper::$actor_name);
     LogHelper::addMessage('actor_action: ' . IndexHelper::$actor_action);
 
+    /* ********************************************************
+	 * *** Lets require files by request... *******************
+	 * ********************************************************/
+	//$do_factory = new DoFactory(); //TODO: Implement
+	//$bo_factory = new BoFactory(); //TODO: Implement
+	require(
+        IndexHelper::$file_root . '/controllers/' . 
+        IndexHelper::$actor_name . '_controller.php'
+    );
 
 ?>
-
-<!doctype html>
-<html lang="en-US">
-<head>
-    <title>News watch</title>
-
-    <meta charset="UTF-8" />
-    <meta http-equiv="content-type" content="text/html" />
-    <meta name="description" content="News watch" />
-    <meta http-equiv="cache-control" content="max-age=0" />
-    <meta http-equiv="cache-control" content="no-cache" />
-    <meta http-equiv="expires" content="0" />
-    <meta http-equiv="pragma" content="no-cache" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="<?php print(IndexHelper::$url_root); ?>/css/index.css" type="text/css" />
-</head>
-<body>
-
-    <div class="head_container">
-        <h1>News watch</h1>
-    </div>
-
-    <div class="menu_container">
-        <nav>
-            <ul>
-                <li><a href="<?php print(IndexHelper::$url_root); ?>">Main</a></li>
-                <li><a href="<?php print(IndexHelper::$url_root); ?>/news/list">News</a></li>
-                <li><a href="<?php print(IndexHelper::$url_root); ?>/scripts/list">Scripts</a></li>
-                <li><a href="<?php print(IndexHelper::$url_root); ?>/databases/list">Databases</a></li>
-            </ul>
-        </nav>
-    </div>
-
-    <div class="main_container">
-        <p>Main container</p>
-    </div>
-    <hr />
-
-    <div class="footer_container">
-        <p>Footer container</p>
-    </div>
-    <hr />
-
-
-    <div class="log_container">
-        <h2>Logs</h2>
-        <div class="logs">
-            <h3>Errors</h3>
-            <div class="log_errors">
-                <?php
-                    foreach (LogHelper::getErrors() as $log) {
-                        print('<p>' . $log . '</p><hr />');
-                    }
-                ?>
-            </div>
-
-            <h3>Warnings</h3>
-            <div class="log_warnings">
-                <?php
-                    foreach (LogHelper::getWarnings() as $log) {
-                        print('<p>' . $log . '</p><hr />');
-                    }
-                ?>
-            </div>
-
-            <h3>Messages</h3>
-            <div class="log_messages">
-                <?php
-                    foreach (LogHelper::getMessages() as $log) {
-                        print('<p>' . $log . '</p><hr />');
-                    }
-                ?>
-            </div>
-        </div>
-    </div>
-    
-
-</body>
-</html>
