@@ -1,0 +1,102 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    margin: 5px;
+    line-height: 1.6;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 5px 0;
+}
+
+h1, h2, h3 {
+    color: #555;
+    font-weight: normal;
+}
+
+
+
+/* Navigation Menu Styles */
+.menu_container {
+    background-color: #333;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.menu_container nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-align: left;
+}
+
+.menu_container nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+.menu_container nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.menu_container nav ul li a:hover {
+    background-color: #555;
+}
+
+
+
+/* Logs Container */
+.logs {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    line-height: 0.5;
+    /*font-size: 0.5em;*/
+    font-size: 0.7em;
+}
+
+/* Log Sections */
+.log_errors {
+    border-left: 4px solid #d9534f;
+    padding-left: 10px;
+}
+
+.log_warnings {
+    border-left: 4px solid #f0ad4e;
+    padding-left: 10px;
+}
+
+.log_messages {
+    border-left: 4px solid #5bc0de;
+    padding-left: 10px;
+}
+
+
+p {
+    margin: 5px 0;
+    color: #444;
+}
+
+/* Specific Log Colors */
+.log_errors p {
+    color: #d9534f;
+}
+
+.log_warnings p {
+    color: #f0ad4e;
+}
+
+.log_messages p {
+    color: #5bc0de;
+}
