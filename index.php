@@ -10,8 +10,7 @@
     require(dirname(__FILE__) . '/models/helpers/index_helper.php');
 	
     IndexHelper::$project_name      = 'News Watch';
-    //IndexHelper::$project_url_name  = StringHelper::getURLSafeString(IndexHelper::$project_name);
-    IndexHelper::$project_url_name  = 'newswatch';
+    IndexHelper::$project_url_name  = 'newswatch'; //StringHelper::getURLSafeString(IndexHelper::$project_name);
     IndexHelper::$file_root         = dirname(__FILE__);
 	IndexHelper::$path              = $_SERVER['REQUEST_URI'];
 	IndexHelper::$url_root          = 'https://pti.unithe.hu/' . IndexHelper::$project_url_name;
@@ -19,6 +18,18 @@
     require(dirname(__FILE__) . '/require.php');
 
     LogHelper::addMessage('REQUEST_URI: ' . IndexHelper::$path);
+
+    /* ********************************************************
+	 * *** Here is the main controlling logic... **************
+	 * ********************************************************/
+	IndexHelper::$request = explode('/', IndexHelper::$path);
+    IndexHelper::$project_name = IndexHelper::$request[1];
+    IndexHelper::$actor_name   = empty(IndexHelper::$request[2]) ? 'index' : IndexHelper::$request[2];
+    IndexHelper::$actor_action = isset(IndexHelper::$request[3]) ? IndexHelper::$request[3] : 'list';
+    LogHelper::addMessage('project_name: ' . IndexHelper::$project_name);
+    LogHelper::addMessage('actor_name: ' . IndexHelper::$actor_name);
+    LogHelper::addMessage('actor_action: ' . IndexHelper::$actor_action);
+
 
 ?>
 
@@ -36,7 +47,7 @@
     <meta http-equiv="pragma" content="no-cache" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="index.css" type="text/css" />
+    <link rel="stylesheet" href="<?php print(IndexHelper::$url_root); ?>/css/index.css" type="text/css" />
 </head>
 <body>
 
@@ -48,9 +59,9 @@
         <nav>
             <ul>
                 <li><a href="<?php print(IndexHelper::$url_root); ?>">Main</a></li>
-                <li><a href="#">News</a></li>
-                <li><a href="#">Scripts</a></li>
-                <li><a href="#">Databases</a></li>
+                <li><a href="<?php print(IndexHelper::$url_root); ?>/news/list">News</a></li>
+                <li><a href="<?php print(IndexHelper::$url_root); ?>/scripts/list">Scripts</a></li>
+                <li><a href="<?php print(IndexHelper::$url_root); ?>/databases/list">Databases</a></li>
             </ul>
         </nav>
     </div>
