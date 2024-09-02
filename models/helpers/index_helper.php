@@ -9,6 +9,7 @@
         public static $project_url_name = '';
         public static $file_root        = '';
         public static $path             = '';
+        public static $url_domain       = '';
         public static $url_root         = '';
 
         public static $request          = [];

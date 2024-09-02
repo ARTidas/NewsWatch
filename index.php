@@ -1,43 +1,44 @@
 <?php
 
+    header('Content-Type: text/html; charset=utf-8');
     header("Cache-Control: no-cache, no-store, must-revalidate");
     header("Pragma: no-cache");
     header("Expires: 0");
 
     error_reporting(E_ALL & ~E_NOTICE);
     ini_set('display_errors', 1);
+    require($_SERVER['DOCUMENT_ROOT'] . '/common/models/helpers/request_helper.php');
 
-    require(dirname(__FILE__) . '/models/helpers/index_helper.php');
-	
-    IndexHelper::$project_name      = 'News Watch';
-    IndexHelper::$project_url_name  = 'newswatch'; //StringHelper::getURLSafeString(IndexHelper::$project_name);
-    IndexHelper::$file_root         = dirname(__FILE__);
-	IndexHelper::$path              = $_SERVER['REQUEST_URI'];
-	IndexHelper::$url_root          = 'https://pti.unithe.hu/' . IndexHelper::$project_url_name;
-    
-    require(dirname(__FILE__) . '/require.php');
+    RequestHelper::$common_file_root    = $_SERVER['DOCUMENT_ROOT'] . '/common/';
+    RequestHelper::$project_name        = 'News watch service';
+    RequestHelper::$project_url_name    = 'newswatch'; //StringHelper::toURLSafeString(RequestHelper::$project_name);
+    RequestHelper::$file_root           = dirname(__FILE__);
+    RequestHelper::$request_uri         = $_SERVER['REQUEST_URI'];
+    RequestHelper::$url_root            = RequestHelper::$url_domain . RequestHelper::$project_url_name;
+    RequestHelper::$common_url_root     = RequestHelper::$url_domain . 'common';
 
-    LogHelper::addMessage('REQUEST_URI: ' . IndexHelper::$path);
+    require(RequestHelper::$file_root . '/require.php');
+
+    LogHelper::addMessage('Request uri: ' . RequestHelper::$request_uri);
 
     /* ********************************************************
 	 * *** Here is the main controlling logic... **************
 	 * ********************************************************/
-	IndexHelper::$request = explode('/', IndexHelper::$path);
-    IndexHelper::$project_name = IndexHelper::$request[1];
-    IndexHelper::$actor_name   = empty(IndexHelper::$request[2]) ? 'index' : IndexHelper::$request[2];
-    IndexHelper::$actor_action = isset(IndexHelper::$request[3]) ? IndexHelper::$request[3] : 'list';
-    LogHelper::addMessage('project_name: ' . IndexHelper::$project_name);
-    LogHelper::addMessage('actor_name: ' . IndexHelper::$actor_name);
-    LogHelper::addMessage('actor_action: ' . IndexHelper::$actor_action);
+	RequestHelper::$request_array       = explode('/', RequestHelper::$request_uri);
+    RequestHelper::$actor_name          = empty(RequestHelper::$request_array[2]) ? 'index' : RequestHelper::$request_array[2];
+    RequestHelper::$actor_action        = isset(RequestHelper::$request_array[3]) ? RequestHelper::$request_array[3] : 'list';
+    RequestHelper::$actor_class_name    = StringHelper::toPascalCase(RequestHelper::$actor_name);
+    LogHelper::addMessage('project_name: ' . RequestHelper::$project_name);
+    LogHelper::addMessage('actor_name: ' . RequestHelper::$actor_name);
+    LogHelper::addMessage('actor_action: ' . RequestHelper::$actor_action);
+
+    $bo_factory = new BoFactory();
 
     /* ********************************************************
-	 * *** Lets require files by request... *******************
+	 * *** Lets require controller by request... **************
 	 * ********************************************************/
-	//$do_factory = new DoFactory(); //TODO: Implement
-	//$bo_factory = new BoFactory(); //TODO: Implement
 	require(
-        IndexHelper::$file_root . '/controllers/' . 
-        IndexHelper::$actor_name . '_controller.php'
+        RequestHelper::$file_root . '/controllers/' . 
+        RequestHelper::$actor_name . '_controller.php'
     );
-
 ?>

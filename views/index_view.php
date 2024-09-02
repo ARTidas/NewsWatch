@@ -3,9 +3,22 @@
 	/* ********************************************************
 	 * ********************************************************
 	 * ********************************************************/
-	class IndexView extends AbstractView {
+	class IndexView extends ProjectAbstractView {
 
-        
+        /* ********************************************************
+         * ********************************************************
+         * ********************************************************/
+        public function displayContent() {
+			?>
+                <h2>Repositiories</h2>
+                <p><a href="https://github.com/ARTidas/NewsWatch">https://github.com/ARTidas/NewsWatch</a></p>
+
+				<h2>TODO</h2>
+                <ol>
+                    <li></li>
+                </ol>
+			<?php
+		}
 
     }
 
