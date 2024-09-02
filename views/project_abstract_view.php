@@ -51,13 +51,14 @@
                     <nav>
                         <a href="<?php print(RequestHelper::$url_root); ?>">Main</a>
                         <a href="<?php print(RequestHelper::$url_domain); ?>">PTI Main</a>
+                        
+                        <!-- <a href="<?php print(RequestHelper::$url_root); ?>/article/list">Articles</a> -->
 
                         <div>
                             <button>Articles</button>
                             <div>
                                 <a href="<?php print(RequestHelper::$url_root); ?>/article/list">List</a>
-                                <a href="<?php print(RequestHelper::$url_root); ?>/article/create">Create</a>
-                                <a href="<?php print(RequestHelper::$url_root); ?>/article/modify">Modify</a>
+                                <a href="<?php print(RequestHelper::$url_root); ?>/article/search">Search</a>
                             </div>
                         </div>
 

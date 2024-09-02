@@ -15,7 +15,9 @@
 				SET
                     url                     = ?,
 					title 				   	= ?,
-                    content                 = ?
+                    content                 = ?,
+                    content_date            = ?,
+                    content_full            = ?,
 					is_active 				= 1,
 					created_at				= NOW(),
 					updated_at 				= NOW()
@@ -60,6 +62,8 @@
 					url                     = ?,
 					title 				   	= ?,
                     content                 = ?,
+                    content_date            = ?,
+                    content_full            = ?,
 					is_active 				= ?,
 					updated_at 				= NOW()
 				WHERE
@@ -95,17 +99,21 @@
 		public function getList() {
 			$query_string = "/* __CLASS__ __FUNCTION__ __FILE__ __LINE__ */
 				SELECT
-                    MAIN.id 		        AS id,
-                    MAIN.url                AS url,
-                    MAIN.title              AS title,
-                    MAIN.content            AS content,
-                    MAIN.is_active 	        AS is_active,
-                    MAIN.created_at         AS created_at,
-                    MAIN.updated_at         AS updated_at
+                    MAIN.id 		            AS id,
+                    MAIN.url                    AS url,
+                    MAIN.title                  AS title,
+                    MAIN.content                AS content,
+                    MAIN.content_uploaded_at    AS content_uploaded_at,
+                    MAIN.content_full           AS content_full,
+                    MAIN.is_active 	            AS is_active,
+                    MAIN.created_at             AS created_at,
+                    MAIN.updated_at             AS updated_at
 				FROM
 					news_watch.articles MAIN
 				WHERE
 					MAIN.is_active = 1
+                ORDER BY
+                    MAIN.content_uploaded_at DESC
 			";
 
 			try {
@@ -128,13 +136,15 @@
 		public function get(array $parameters) {
 			$query_string = "/* __CLASS__ __FUNCTION__ __FILE__ __LINE__ */
 				SELECT
-					MAIN.id 		        AS id,
-                    MAIN.url                AS url,
-                    MAIN.title              AS title,
-                    MAIN.content            AS content,
-                    MAIN.is_active 	        AS is_active,
-                    MAIN.created_at         AS created_at,
-                    MAIN.updated_at         AS updated_at
+					MAIN.id 		            AS id,
+                    MAIN.url                    AS url,
+                    MAIN.title                  AS title,
+                    MAIN.content                AS content,
+                    MAIN.content_uploaded_at    AS content_uploaded_at,
+                    MAIN.content_full           AS content_full,
+                    MAIN.is_active 	            AS is_active,
+                    MAIN.created_at             AS created_at,
+                    MAIN.updated_at             AS updated_at
 				FROM
 					news_watch.articles MAIN
 				WHERE

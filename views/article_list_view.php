@@ -17,7 +17,7 @@
                         <tr>
                             <?php
                                 foreach ((new (RequestHelper::$actor_class_name . 'Do'))->getAttributes() as $key => $value) {
-                                    if (ActorHelper::isAttributeRequiredForList($key)) {
+                                    if (ActorHelper::isAttributeRequiredForArticleList($key)) {
                                         print('<th>' . $key . '</th>');
                                     }
                                 }
@@ -29,8 +29,13 @@
                             foreach ($this->do->do_list as $do) {
                                 print('<tr>');
                                     foreach ($do->getAttributes() as $key => $value) {
-                                        if (ActorHelper::isAttributeRequiredForList($key)) {
-                                            print('<td>' . $value . '</td>');
+                                        if (ActorHelper::isAttributeRequiredForArticleList($key)) {
+                                            if ($key === 'url') {
+                                                print('<td><a href="' . $value . '" target="_blank">' . $value . '</a></td>');
+                                            }
+                                            else {
+                                                print('<td>' . $value . '</td>');
+                                            }
                                         }
                                     }
                                 print('</tr>');
