@@ -3,7 +3,7 @@
 	/* ********************************************************
 	 * ********************************************************
 	 * ********************************************************/
-	class ArticleDao extends AbstractDao {
+	class NewsArticleDao extends AbstractDao {
 
 		/* ********************************************************
 		 * ********************************************************
@@ -11,8 +11,9 @@
 		public function create(array $parameters) {
 			$query_string = "/* __CLASS__ __FUNCTION__ __FILE__ __LINE__ */
 				INSERT INTO
-					news_watch.articles
+					news_watch.news_articles
 				SET
+                    source                  = ?,
                     url                     = ?,
 					title 				   	= ?,
                     content                 = ?,
@@ -57,8 +58,9 @@
 		public function update(array $parameters) {
 			$query_string = "/* __CLASS__ __FUNCTION__ __FILE__ __LINE__ */
 				UPDATE
-					news_watch.articles
+					news_watch.news_articles
 				SET
+                    source                  = ?,
 					url                     = ?,
 					title 				   	= ?,
                     content                 = ?,
@@ -100,6 +102,7 @@
 			$query_string = "/* __CLASS__ __FUNCTION__ __FILE__ __LINE__ */
 				SELECT
                     MAIN.id 		            AS id,
+                    MAIN.source 		        AS source,
                     MAIN.url                    AS url,
                     MAIN.title                  AS title,
                     MAIN.content                AS content,
@@ -109,7 +112,7 @@
                     MAIN.created_at             AS created_at,
                     MAIN.updated_at             AS updated_at
 				FROM
-					news_watch.articles MAIN
+					news_watch.news_articles MAIN
 				WHERE
 					MAIN.is_active = 1
                 ORDER BY
@@ -137,6 +140,7 @@
             $query_string = "
                 SELECT
                     MAIN.id                      AS id,
+                    MAIN.source 		         AS source,
                     MAIN.url                     AS url,
                     MAIN.title                   AS title,
                     MAIN.content                 AS content,
@@ -146,7 +150,7 @@
                     MAIN.created_at              AS created_at,
                     MAIN.updated_at              AS updated_at
                 FROM
-                    news_watch.articles MAIN
+                    news_watch.news_articles MAIN
                 WHERE
                     MAIN.is_active = 1 AND (
                         MAIN.title LIKE :search_string OR
@@ -180,6 +184,7 @@
 			$query_string = "/* __CLASS__ __FUNCTION__ __FILE__ __LINE__ */
 				SELECT
 					MAIN.id 		            AS id,
+                    MAIN.source 		        AS source,
                     MAIN.url                    AS url,
                     MAIN.title                  AS title,
                     MAIN.content                AS content,
@@ -189,7 +194,7 @@
                     MAIN.created_at             AS created_at,
                     MAIN.updated_at             AS updated_at
 				FROM
-					news_watch.articles MAIN
+					news_watch.news_articles MAIN
 				WHERE
 					MAIN.id = ?
 			";

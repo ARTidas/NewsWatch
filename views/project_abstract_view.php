@@ -52,17 +52,21 @@
                         <a href="<?php print(RequestHelper::$url_root); ?>">Main</a>
                         <a href="<?php print(RequestHelper::$url_domain); ?>">PTI Main</a>
                         
-                        <!-- <a href="<?php print(RequestHelper::$url_root); ?>/article/list">Articles</a> -->
-
                         <div>
-                            <button>Articles</button>
+                            <button>UNITHE articles</button>
                             <div>
                                 <a href="<?php print(RequestHelper::$url_root); ?>/article/list">List</a>
                                 <a href="<?php print(RequestHelper::$url_root); ?>/article/search">Search</a>
                             </div>
                         </div>
 
-
+                        <div>
+                            <button>News articles</button>
+                            <div>
+                                <a href="<?php print(RequestHelper::$url_root); ?>/news_article/list">List</a>
+                                <a href="<?php print(RequestHelper::$url_root); ?>/news_article/search">Search</a>
+                            </div>
+                        </div>
 
                     </nav>
                 </section>
