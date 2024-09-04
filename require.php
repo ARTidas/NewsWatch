@@ -11,6 +11,7 @@
         require(RequestHelper::$common_file_root . '/models/bos/abstract_bo.php');
         require(RequestHelper::$file_root . '/models/bos/article_bo.php');
         require(RequestHelper::$file_root . '/models/bos/news_article_bo.php');
+        require(RequestHelper::$file_root . '/models/bos/article_comparison_bo.php');
 
         /* ********************************************************
          * *** Data Access Objects ********************************
@@ -18,6 +19,7 @@
         require(RequestHelper::$common_file_root . '/models/daos/abstract_dao.php');
         require(RequestHelper::$file_root . '/models/daos/article_dao.php');
         require(RequestHelper::$file_root . '/models/daos/news_article_dao.php');
+        require(RequestHelper::$file_root . '/models/daos/article_comparison_dao.php');
 
         /* ********************************************************
          * *** Data Objects ***************************************
@@ -26,6 +28,7 @@
         require(RequestHelper::$common_file_root . '/models/dos/abstract_do.php');
         require(RequestHelper::$file_root . '/models/dos/article_do.php');
         require(RequestHelper::$file_root . '/models/dos/news_article_do.php');
+        require(RequestHelper::$file_root . '/models/dos/article_comparison_do.php');
 
         /* ********************************************************
          * *** Helpers ********************************************
@@ -51,5 +54,7 @@
     require(RequestHelper::$file_root . '/views/article_list_view.php');
     require(RequestHelper::$file_root . '/views/article_search_view.php');
     require(RequestHelper::$file_root . '/views/news_article_list_view.php');
+    require(RequestHelper::$file_root . '/views/news_article_search_view.php');
+    require(RequestHelper::$file_root . '/views/article_comparison_list_view.php');
 
 ?>

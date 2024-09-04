@@ -68,6 +68,14 @@
                             </div>
                         </div>
 
+                        <div>
+                            <button>Article comparisons</button>
+                            <div>
+                                <a href="<?php print(RequestHelper::$url_root); ?>/article_comparison/list">List</a>
+                                <!-- <a href="<?php print(RequestHelper::$url_root); ?>/article_comparison/search">Search</a> -->
+                            </div>
+                        </div>
+
                     </nav>
                 </section>
 
