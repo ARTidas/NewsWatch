@@ -53,6 +53,7 @@
     require(RequestHelper::$file_root . '/views/index_view.php');
     require(RequestHelper::$file_root . '/views/article_list_view.php');
     require(RequestHelper::$file_root . '/views/article_search_view.php');
+    require(RequestHelper::$file_root . '/views/article_preview_view.php');
     require(RequestHelper::$file_root . '/views/news_article_list_view.php');
     require(RequestHelper::$file_root . '/views/news_article_search_view.php');
     require(RequestHelper::$file_root . '/views/article_comparison_list_view.php');

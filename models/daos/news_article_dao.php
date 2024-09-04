@@ -219,6 +219,55 @@
 				return false;
 			}
 		}
+
+		/* ********************************************************
+		 * ********************************************************
+		 * ********************************************************/
+		public function getSearchResultListByCommaSeparatedIDs($id_list) {
+			// Split the comma-separated string into an array
+			$ids = explode(',', $id_list);
+
+			// Create placeholders for each ID in the array
+			$placeholders = implode(',', array_fill(0, count($ids), '?'));
+			
+            $query_string = "
+                SELECT
+                    MAIN.id                      AS id,
+                    MAIN.source 		         AS source,
+                    MAIN.url                     AS url,
+                    MAIN.title                   AS title,
+                    MAIN.content                 AS content,
+                    MAIN.content_uploaded_at     AS content_uploaded_at,
+                    MAIN.content_full            AS content_full,
+                    MAIN.is_active               AS is_active,
+                    MAIN.created_at              AS created_at,
+                    MAIN.updated_at              AS updated_at
+                FROM
+                    news_watch.news_articles MAIN
+                WHERE
+                    MAIN.id IN ($placeholders)
+                ORDER BY
+                    MAIN.content_uploaded_at DESC
+            ";
+        
+            try {
+                $handler = $this->database_connection_bo->getConnection();
+				$statement = $handler->prepare($query_string);
+				
+				// Bind each ID separately
+				foreach ($ids as $index => $id) {
+					$statement->bindValue($index + 1, trim($id), PDO::PARAM_INT);
+				}
+
+				$statement->execute();
+
+				return $statement->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $exception) {
+                LogHelper::addError('Error: ' . $exception->getMessage());
+        
+                return false;
+            }
+        }
 		
 	}
 ?>

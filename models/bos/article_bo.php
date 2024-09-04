@@ -30,40 +30,49 @@
         /* ********************************************************
 		 * ********************************************************
 		 * ********************************************************/
-		public function create(AbstractDo $do) {
-            $this->validateDo($do);
+		public function get(AbstractDo $do) {
+			$do_factory = new DoFactory();
+			
+			$records = $this->dao->get([$do->id]);
+			if (isset($records[0])) {
+				$record = $records[0];
+			}
 
-            if (!$this->isDoValid($do)) {
-                return false;
-            }
-
-			return ($this->dao)->create(
-				[
-                    $do->url,
-					$do->title,
-                    $do->content
-				]
-			);
+			if (empty($record)) {
+				LogHelper::addWarning('Could not find record for: ' . $this->actor_name);
+			}
+			else {
+				return $do_factory->get($this->actor_name, $record);
+			}
+			
+			return $do;
 		}
 
 		/* ********************************************************
 		 * ********************************************************
 		 * ********************************************************/
-		public function update(AbstractDo $do) {
-            $this->validateDo($do);
-
-            if (!$this->isDoValid($do)) {
-                return false;
-            }
-
-			return ($this->dao)->update(
-				[
-					$do->url,
-					$do->title,
-                    $do->content
-				]
-			);
+		public function getNewsArticleDoList(AbstractDo $do) {
+			$do_factory = new DoFactory();
+			$do_list = [];
+			
+			$records = (new NewsArticleDao)->getSearchResultListByCommaSeparatedIDs($do->news_article_id_list);
+			
+			if (empty($records)) {
+				//LogHelper::addWarning('There are no records of: ' . $this->actor_name);
+				LogHelper::addWarning('There are no records of: NewsArticles');
+			}
+			else {
+                LogHelper::addConfirmation('Records found: ' . count($records));
+				foreach ($records as $record) {
+					//$do_list[] = $do_factory->get($this->actor_name, $record);
+					$do_list[] = $do_factory->get('NewsArticle', $record);
+				}
+			}
+			
+			return $do_list;
 		}
+
+		
 
     }
 

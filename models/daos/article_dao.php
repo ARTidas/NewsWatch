@@ -99,21 +99,33 @@
 		public function getList() {
 			$query_string = "/* __CLASS__ __FUNCTION__ __FILE__ __LINE__ */
 				SELECT
-                    MAIN.id 		            AS id,
-                    MAIN.url                    AS url,
-                    MAIN.title                  AS title,
-                    MAIN.content                AS content,
-                    MAIN.content_uploaded_at    AS content_uploaded_at,
-                    MAIN.content_full           AS content_full,
-                    MAIN.is_active 	            AS is_active,
-                    MAIN.created_at             AS created_at,
-                    MAIN.updated_at             AS updated_at
+                    ARTICLES.id 		            AS id,
+                    ARTICLES.url                    AS url,
+                    ARTICLES.title                  AS title,
+                    ARTICLES.content                AS content,
+                    ARTICLES.content_uploaded_at    AS content_uploaded_at,
+                    ARTICLES.content_full           AS content_full,
+                    ARTICLES.is_active 	            AS is_active,
+                    ARTICLES.created_at             AS created_at,
+                    ARTICLES.updated_at             AS updated_at,
+					(
+						SELECT
+							GROUP_CONCAT(
+								ARTICLE_COMPARISONS.news_article_id
+								ORDER BY ARTICLE_COMPARISONS.cosine_similarity DESC
+								LIMIT 5
+							) AS news_article_id_list
+						FROM
+							news_watch.article_comparisons ARTICLE_COMPARISONS
+						WHERE
+							ARTICLE_COMPARISONS.uni_article_id = ARTICLES.id
+					) AS news_article_id_list
 				FROM
-					news_watch.articles MAIN
+					news_watch.articles ARTICLES
 				WHERE
-					MAIN.is_active = 1
+					ARTICLES.is_active = 1
                 ORDER BY
-                    MAIN.content_uploaded_at DESC
+                    ARTICLES.content_uploaded_at DESC
 			";
 
 			try {
@@ -179,19 +191,34 @@
 		public function get(array $parameters) {
 			$query_string = "/* __CLASS__ __FUNCTION__ __FILE__ __LINE__ */
 				SELECT
-					MAIN.id 		            AS id,
-                    MAIN.url                    AS url,
-                    MAIN.title                  AS title,
-                    MAIN.content                AS content,
-                    MAIN.content_uploaded_at    AS content_uploaded_at,
-                    MAIN.content_full           AS content_full,
-                    MAIN.is_active 	            AS is_active,
-                    MAIN.created_at             AS created_at,
-                    MAIN.updated_at             AS updated_at
+					ARTICLES.id AS id,
+					ARTICLES.url AS url,
+					ARTICLES.title AS title,
+					ARTICLES.content AS content,
+					ARTICLES.content_uploaded_at AS content_uploaded_at,
+					ARTICLES.content_full AS content_full,
+					ARTICLES.is_active AS is_active,
+					ARTICLES.created_at AS created_at,
+					ARTICLES.updated_at AS updated_at,
+					(
+						SELECT
+							GROUP_CONCAT(
+								ARTICLE_COMPARISONS.news_article_id
+								ORDER BY ARTICLE_COMPARISONS.cosine_similarity DESC
+								LIMIT 5
+							) AS news_article_id_list
+						FROM
+							news_watch.article_comparisons ARTICLE_COMPARISONS
+						WHERE
+							ARTICLE_COMPARISONS.uni_article_id = ARTICLES.id
+					) AS news_article_id_list
 				FROM
-					news_watch.articles MAIN
+					news_watch.articles ARTICLES
 				WHERE
-					MAIN.id = ?
+					ARTICLES.id = ?
+				ORDER BY
+					ARTICLES.content_uploaded_at DESC
+				;
 			";
 
 			try {

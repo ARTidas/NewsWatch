@@ -11,6 +11,8 @@
         public $content;
         public $content_full;
 
+        public $news_article_id_list;
+
     }
 
 ?>
