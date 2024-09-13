@@ -116,7 +116,8 @@
 				WHERE
 					MAIN.is_active = 1
                 ORDER BY
-                    MAIN.content_uploaded_at DESC
+                    -- MAIN.content_uploaded_at DESC
+					MAIN.updated_at DESC
 			";
 
 			try {
@@ -158,7 +159,8 @@
                         MAIN.content_full LIKE :search_string
                     )
                 ORDER BY
-                    MAIN.content_uploaded_at DESC
+                    -- MAIN.content_uploaded_at DESC
+					MAIN.updated_at DESC
             ";
         
             try {
