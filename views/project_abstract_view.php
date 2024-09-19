@@ -65,6 +65,7 @@
                             <div>
                                 <a href="<?php print(RequestHelper::$url_root); ?>/news_article/list">List</a>
                                 <a href="<?php print(RequestHelper::$url_root); ?>/news_article/search">Search</a>
+                                <a href="<?php print(RequestHelper::$url_root); ?>/news_article/link">Link</a>
                             </div>
                         </div>
 

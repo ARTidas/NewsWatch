@@ -101,23 +101,39 @@
 		public function getList() {
 			$query_string = "/* __CLASS__ __FUNCTION__ __FILE__ __LINE__ */
 				SELECT
-                    MAIN.id 		            AS id,
-                    MAIN.source 		        AS source,
-                    MAIN.url                    AS url,
-                    MAIN.title                  AS title,
-                    MAIN.content                AS content,
-                    MAIN.content_uploaded_at    AS content_uploaded_at,
-                    MAIN.content_full           AS content_full,
-                    MAIN.is_active 	            AS is_active,
-                    MAIN.created_at             AS created_at,
-                    MAIN.updated_at             AS updated_at
+					NEWS_ARTICLES.id AS id,
+					NEWS_ARTICLES.source AS source,
+					NEWS_ARTICLES.url AS url,
+					NEWS_ARTICLES.title AS title,
+					NEWS_ARTICLES.content AS content,
+					NEWS_ARTICLES.content_uploaded_at AS content_uploaded_at,
+					NEWS_ARTICLES.content_full AS content_full,
+					NEWS_ARTICLES.is_active AS is_active,
+					NEWS_ARTICLES.created_at AS created_at,
+					NEWS_ARTICLES.updated_at AS updated_at,
+					MANUAL_ARTICLE_COMPARISONS.manual_article_id_list
 				FROM
-					news_watch.news_articles MAIN
+					news_watch.news_articles NEWS_ARTICLES
+				LEFT JOIN (
+					SELECT
+						ARTICLE_COMPARISONS.news_article_id,
+						GROUP_CONCAT(
+							ARTICLE_COMPARISONS.uni_article_id
+							ORDER BY ARTICLE_COMPARISONS.cosine_similarity DESC
+							LIMIT 5
+						) AS manual_article_id_list
+					FROM
+						news_watch.article_comparisons ARTICLE_COMPARISONS
+					WHERE
+						ARTICLE_COMPARISONS.status = 'ManuallyApproved'
+					GROUP BY
+						ARTICLE_COMPARISONS.news_article_id
+				) MANUAL_ARTICLE_COMPARISONS
+				ON MANUAL_ARTICLE_COMPARISONS.news_article_id = NEWS_ARTICLES.id
 				WHERE
-					MAIN.is_active = 1
-                ORDER BY
-                    -- MAIN.content_uploaded_at DESC
-					MAIN.updated_at DESC
+					NEWS_ARTICLES.is_active = 1
+				ORDER BY
+					IFNULL(NEWS_ARTICLES.content_uploaded_at, NEWS_ARTICLES.created_at) DESC;
 			";
 
 			try {
@@ -270,6 +286,75 @@
                 return false;
             }
         }
+
+
+		/* ********************************************************
+		 * ********************************************************
+		 * ********************************************************/
+		public function delete(array $parameters) {
+			$query_string = "/* __CLASS__ __FUNCTION__ __FILE__ __LINE__ */
+				UPDATE
+					news_watch.news_articles
+				SET
+					is_active 				= 0,
+					updated_at 				= NOW()
+				WHERE
+					id 						= ?
+			";
+
+			try {
+				return(
+					($this->database_connection_bo)->getConnection()
+						->prepare($query_string)
+						->execute(
+							(
+								array_map(
+									function($value) {
+										return $value === '' ? NULL : $value;
+									},
+									$parameters
+								)
+							)
+						)
+				);
+			}
+			catch(Exception $exception) {
+				LogHelper::addError('ERROR: ' . $exception->getMessage());
+
+				return false;
+			}
+		}
+
+
+		/* ********************************************************
+		 * ********************************************************
+		 * ********************************************************/
+		public function updateStatus($id, $status) {
+			$query_string = "/* __CLASS__ __FUNCTION__ __FILE__ __LINE__ */
+				UPDATE
+					news_watch.article_comparisons
+				SET
+					status 				= :status,
+					updated_at 			= NOW()
+				WHERE
+					id 					= :id
+			";
+
+			try {
+                $handler = $this->database_connection_bo->getConnection();
+                $statement = $handler->prepare($query_string);
+                $statement->bindValue(':status', $status, PDO::PARAM_STR);
+				$statement->bindValue(':id', $id, PDO::PARAM_INT);
+                $statement->execute();
+        
+                return $statement->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $exception) {
+                LogHelper::addError('Error: ' . $exception->getMessage());
+        
+                return false;
+            }
+		}
+
 		
 	}
 ?>

@@ -27,6 +27,38 @@
 			return $do_list;
 		}
 
+		/* ********************************************************
+		 * ********************************************************
+		 * ********************************************************/
+		public function get($id) {
+			$do_factory = new DoFactory();
+			
+			$record = $this->dao->get([$id])[0];
+			
+			if (empty($record)) {
+				LogHelper::addWarning('There are no record of: ' . $this->actor_name . ', for id: #' . $do->id);
+			}
+			else {
+				LogHelper::addConfirmation('Record found!');
+				return $do = $do_factory->get($this->actor_name, $record);
+			}
+			
+			return false;
+		}
+
+
+		/* ********************************************************
+		 * ********************************************************
+		 * ********************************************************/
+		public function setStatus(AbstractDo $do) {
+			return ($this->dao)->updateStatus(
+				$do->id,
+				$do->status
+			);
+		}
+
+		
+
     }
 
 ?>

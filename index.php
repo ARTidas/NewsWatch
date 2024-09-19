@@ -22,6 +22,12 @@
     LogHelper::addMessage('Request uri: ' . RequestHelper::$request_uri);
 
     /* ********************************************************
+	 * *** Security... ****************************************
+	 * ********************************************************/
+    session_start();
+    SecurityBo::runCheck();
+
+    /* ********************************************************
 	 * *** Here is the main controlling logic... **************
 	 * ********************************************************/
 	RequestHelper::$request_array       = explode('/', RequestHelper::$request_uri);
